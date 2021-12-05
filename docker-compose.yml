@@ -1,0 +1,29 @@
+version: '4'
+services:
+  app:
+    container_name: app
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/vig11
+      - ./server/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - 80:80
+  
+  database: 
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+    ports:
+      - 3306:3306
+  
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: database
+    ports:
+      - 8080:80
+    
